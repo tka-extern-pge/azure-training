@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworkName": {
+            "value": "tka-dev-edw-vnet"
+        },
+        "localGatewayName": {
+            "value": "tka-dev-edw-lc-gw"
+        },
+        "localGatewayIpAddress": {
+            "value": "88.130.59.42"
+        },
+        "localAddressPrefix": {
+            "value": [ "192.168.178.49/32" ]
+        },
+        "gatewayName": {
+            "value": "tka-dev-edw-vpn-gw"
+        },
+        "connectionName": {
+            "value": "Azure2Other"
+        },
+        "sharedKey": {
+            "value": "abc10"
+        }
+    }
+}

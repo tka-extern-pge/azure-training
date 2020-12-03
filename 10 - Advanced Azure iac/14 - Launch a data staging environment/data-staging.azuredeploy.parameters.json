@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "existingDataFactoryName": {
+        "value":"edw-data-staging-df-iomol3afvksym"
+      },
+      "existingDataFactoryResourceGroup": {
+        "value":"tka-dev-enterprise-datawarehouse"
+      },
+      "existingDataFactoryVersion": {
+        "value":"V2"
+      },
+      "IntegrationRuntimeName": {
+        "value":"tka-uk-erp-ir"
+      },
+      "NodeCount":{
+        "value": 1
+      },
+      "adminUserName": {
+        "value": "TKAirT3st"
+      },
+      "adminPassword": {
+        "value": "tk4-sh4d0W"
+      },
+      "existingVirtualNetworkName":{
+        "value": "tka-dev-edw-vnet"
+      },
+      "existingVnetResourceGroupName":{
+        "value": "tka-dev-enterprise-datawarehouse"
+      },
+      "existingSubnetInYourVnet": {
+        "value": "tka-dev-edw-adf-data-staging-subnet"
+      },
+      "existingVnetLocation": {
+        "value": "northeurope"
+      },
+      "linkedVMTemplateURI": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/resources/vm/VMtemplate.json?"
+      },
+      "linkedIRTemplate": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/resources/adf-ir/IRtemplate.json?"
+      },
+      "linkedIRinstall": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/resources/adf-ir/IRInstall.json?"
+      },
+      "linkedScript": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/configurations/vpnGatewayInstall.ps1?"
+      }
+    }
+  }

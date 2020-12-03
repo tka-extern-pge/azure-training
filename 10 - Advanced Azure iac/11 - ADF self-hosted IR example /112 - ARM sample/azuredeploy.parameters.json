@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "existingDataFactoryName": {
+        "value":"az-training-df-iomol3afvksym"
+      },
+      "existingDataFactoryResourceGroup": {
+        "value":"az-training"
+      },
+      "existingDataFactoryVersion": {
+        "value":"V2"
+      },
+      "IntegrationRuntimeName": {
+        "value":"az-training-ir"
+      },
+      "NodeCount":{
+        "value": 1
+      },
+      "adminUserName": {
+        "value": "TKAirT3st"
+      },
+      "adminPassword": {
+        "value": "tk4-sh4d0W"
+      },
+      "existingVirtualNetworkName":{
+        "value": "az-training-vnet"
+      },
+      "existingVnetResourceGroupName":{
+        "value": "az-training-rg"
+      },
+      "existingSubnetInYourVnet": {
+        "value": "az-training-subnet"
+      },
+      "existingVnetLocation": {
+        "value": "northeurope"
+      },
+      "linkedVMTemplateURI": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/az-training/main/resources/vm/VMtemplate.json?"
+      },
+      "linkedIRTemplate": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/az-training/main/resources/adf-ir/IRtemplate.json?"
+      },
+      "linkedIRinstall": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/az-training/main/resources/adf-ir/IRInstall.json?"
+      },
+      "linkedScript": {
+        "value": "https://raw.githubusercontent.com/tka-extern-pge/az-training/main/configurations/vpnGatewayInstall.ps1?"
+      }
+    }
+  }

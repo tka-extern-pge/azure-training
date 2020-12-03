@@ -1,0 +1,148 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "localGatewayName": {
+        "type": "string",
+        "defaultValue": "localGateway",
+        "metadata": {
+          "description": "Arbitrary name for gateway resource representing "
+        }
+      },
+      "localGatewayIpAddress": {
+        "type": "string",
+        "defaultValue": "1.1.1.1",
+        "metadata": {
+          "description": "Public IP of your StrongSwan Instance"
+        }
+      },
+      "localAddressPrefix": {
+        "type": "array",
+        "defaultValue": [
+          "192.168.0.0/16",
+          "172.16.0.0/12"
+        ],
+        "metadata": {
+          "description": "CIDR block representing the address space of the OnPremise VPN network's Subnet"
+        }
+      },
+      "gatewayName": {
+        "type": "string",
+        "defaultValue": "azureGateway",
+        "metadata": {
+          "description": "Arbitrary name for the new gateway"
+        }
+      },
+      "connectionName": {
+        "type": "string",
+        "defaultValue": "Azure2Other",
+        "metadata": {
+          "description": "Arbitrary name for the new connection between Azure VNet and other network"
+        }
+      },
+      "sharedKey": {
+        "type": "securestring",
+        "metadata": {
+          "description": "Shared key (PSK) for IPSec tunnel"
+        }
+      },
+      "virtualNetworkName": {
+        "type": "string",
+        "defaultValue": "azureVnet",
+        "metadata": {
+          "description": "Arbitrary name for the Azure Virtual Network"
+        }
+      },
+      "azureVNetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.101.0.0/16",
+      "metadata": {
+        "description": "CIDR block representing the address space of the Azure VNet"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "tka-dev-edw-adf-data-staging-subnet",
+      "metadata": {
+        "description": "Arbitrary name for the Azure Subnet"
+      }
+    },
+    "subnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.101.1.0/24",
+      "metadata": {
+        "description": "CIDR block for VM subnet, subset of azureVNetAddressPrefix address space"
+      }
+    },
+    "gatewaySubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.101.0.0/28",
+      "metadata": {
+        "description": "CIDR block for gateway subnet, subset of azureVNetAddressPrefix address space"
+      }
+    }
+    },
+    "variables": { },
+    "resources": [
+      {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('virtualNetworkName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('azureVNetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetPrefix')]"
+            }
+          },
+          {
+            "name": "GatewaySubnet",
+            "properties": {
+              "addressPrefix": "[parameters('gatewaySubnetPrefix')]"
+            }
+          }
+        ]
+      }
+      },
+      {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Network/localNetworkGateways",
+        "name": "[parameters('localGatewayName')]",
+        "location": "[resourceGroup().location]",
+        "properties": {
+          "localNetworkAddressSpace": {
+            "addressPrefixes": "[parameters('localAddressPrefix')]"
+          },
+          "gatewayIpAddress": "[parameters('localGatewayIpAddress')]"
+        }
+      },
+      {
+        "apiVersion": "2015-06-15",
+        "name": "[parameters('connectionName')]",
+        "type": "Microsoft.Network/connections",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('gatewayName'))]",
+          "[concat('Microsoft.Network/localNetworkGateways/', parameters('localGatewayName'))]"
+        ],
+        "properties": {
+          "virtualNetworkGateway1": {
+            "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('gatewayName'))]"
+          },
+          "localNetworkGateway2": {
+            "id": "[resourceId('Microsoft.Network/localNetworkGateways', parameters('localGatewayName'))]"
+          },
+          "connectionType": "IPsec",
+          "routingWeight": 10,
+          "sharedKey": "[parameters('sharedKey')]"
+        }
+      }
+    ]
+  }

@@ -1,0 +1,22 @@
+# Pipeline to manage the different deployments of the data-staging-layer
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Kostenlose Testversion(41860fc2-6fd3-4cf5-8b1a-35bd82315ceb)'
+    subscriptionId: '41860fc2-6fd3-4cf5-8b1a-35bd82315ceb'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'tka-dev-enterprise-datawarehouse'
+    location: 'North Europe'
+    templateLocation: 'Linked artifact'
+    csmFile: 'data-staging.azuredeploy.json'
+    csmParametersFile: 'data-staging.azuredeploy.parameters.json'
+    overrideParameters: '-linkedVMTemplateURI https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/resources/vm/VMtemplate.json? -linkedIRTemplate https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/resources/adf-ir/IRtemplate.json? -linkedIRinstall https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/resources/adf-ir/IRInstall.json? -linkedScript https://raw.githubusercontent.com/tka-extern-pge/tka-edw-dev-data-staging-layer/main/configurations/vpnGatewayInstall.ps1?'
+    deploymentMode: 'Incremental'
